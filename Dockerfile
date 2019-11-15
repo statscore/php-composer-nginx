@@ -8,8 +8,6 @@ RUN apk --no-cache add nginx supervisor composer mysql-client git openssh-client
     && pecl install mongodb amqp && docker-php-ext-enable mongodb amqp \
     && composer global require hirak/prestissimo brianium/paratest \
     && mkdir /root/.ssh/ && echo -e "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config \
-    && chown -R www-data:www-data /var/tmp/nginx && chown -R www-data:www-data /var/lib/nginx \
-    && chown -R www-data:www-data /var/www \
     && apk del .build-deps \
     && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*
 
