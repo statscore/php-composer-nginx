@@ -13,7 +13,7 @@ RUN set -x && apt-get -y update \
 RUN rm /etc/nginx/sites-enabled/default
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN composer global require hirak/prestissimo brianium/paratest
+RUN composer global require hirak/prestissimo brianium/paratest:3.1.2
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY config/stop-supervisor.sh /usr/local/bin/stop-supervisor.sh
