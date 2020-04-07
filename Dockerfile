@@ -1,7 +1,7 @@
 FROM php:7.4.3-fpm-buster
 
 RUN set -x && apt-get -y update \
-    && apt-get -y install --no-install-recommends libicu-dev libzip-dev libpng-dev \
+    && apt-get -y install --no-install-recommends libicu-dev libzip-dev libpng-dev cron \
         nginx supervisor git openssh-client libssh-dev librabbitmq-dev unzip default-mysql-client-core \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash \
     && docker-php-ext-configure intl && docker-php-ext-configure calendar \
