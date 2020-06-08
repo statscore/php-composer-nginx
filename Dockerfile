@@ -6,7 +6,7 @@ RUN set -x && apt-get -y update \
     && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash \
     && docker-php-ext-configure intl && docker-php-ext-configure calendar \
     && docker-php-ext-install intl calendar zip gd bcmath sockets pdo_mysql opcache mysqli pcntl \
-    && pecl install mongodb amqp redis && docker-php-ext-enable mongodb amqp redis \
+    && pecl install mongodb amqp redis pcov && docker-php-ext-enable mongodb amqp redis pcov \
     && mkdir /root/.ssh/ && echo "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/lastlog /var/log/faillog /usr/share/doc rm -rf /tmp/pear
