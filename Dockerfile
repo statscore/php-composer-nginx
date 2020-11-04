@@ -1,4 +1,4 @@
-FROM php:7.4.11-fpm-buster
+FROM php:7.4.12-fpm-buster
 
 RUN set -x && apt-get -y update \
     && apt-get -y install --no-install-recommends libicu-dev libzip-dev libpng-dev cron \
@@ -13,7 +13,7 @@ RUN set -x && apt-get -y update \
 
 RUN rm /etc/nginx/sites-enabled/default
 
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer global require hirak/prestissimo
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
