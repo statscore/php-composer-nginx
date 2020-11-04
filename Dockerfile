@@ -14,7 +14,6 @@ RUN set -x && apt-get -y update \
 RUN rm /etc/nginx/sites-enabled/default
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-RUN composer global require hirak/prestissimo
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY config/stop-supervisor.sh /usr/local/bin/stop-supervisor.sh
