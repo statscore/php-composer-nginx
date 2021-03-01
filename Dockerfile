@@ -1,4 +1,4 @@
-FROM php:7.4.12-fpm-buster
+FROM php:7.4.15-fpm-buster
 
 RUN set -x && apt-get -y update \
     && apt-get -y install --no-install-recommends libicu-dev libzip-dev libpng-dev cron \
