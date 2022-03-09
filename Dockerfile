@@ -1,19 +1,22 @@
-FROM php:7.4-fpm-alpine3.14
+FROM php:7.4-fpm-alpine3.13
 
 RUN apk --no-cache add nginx supervisor composer mysql-client git openssh-client bash \
-    libzip-dev rabbitmq-c-dev libpng-dev icu-libs tzdata libssh-dev \
-    && apk add --no-cache --virtual .build-deps zlib-dev icu-dev g++ autoconf make \
-    && docker-php-ext-configure intl && docker-php-ext-configure calendar \
+    libzip-dev rabbitmq-c-dev libpng-dev icu-dev tzdata libssh-dev \
+    && apk add --no-cache --virtual .build-deps zlib-dev icu-dev g++ autoconf make
+RUN docker-php-ext-configure intl && docker-php-ext-configure calendar \
     && docker-php-ext-install intl calendar zip gd bcmath sockets pdo_mysql opcache mysqli pcntl \
-    && pecl install mongodb amqp redis pcov && docker-php-ext-enable mongodb amqp redis pcov \
-    && composer global require brianium/paratest \
-    && mkdir /root/.ssh/ && echo -e "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config \
-    && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config \
-    && apk del .build-deps \
+    && pecl install mongodb amqp redis pcov && docker-php-ext-enable mongodb amqp redis pcov
+
+RUN composer global require brianium/paratest
+
+RUN mkdir /root/.ssh/ && echo -e "Host bitbucket.org\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config \
+    && echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
+
+RUN apk del .build-deps \
     && rm -rf /tmp/* /usr/local/lib/php/doc/* /var/cache/apk/*
 
 RUN mkdir /etc/cron.d/
-RUN rm /etc/nginx/http.d/default.conf && mv /etc/nginx/http.d /etc/nginx/conf.d
+RUN rm /etc/nginx/conf.d/default.conf
 
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY config/stop-supervisor.sh /usr/local/bin/stop-supervisor.sh
