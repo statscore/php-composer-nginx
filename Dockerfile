@@ -1,6 +1,7 @@
-FROM php:7.4-fpm-alpine3.14
+FROM php:7.4-fpm-alpine
 
-RUN apk --no-cache add nginx supervisor composer mysql-client git openssh-client bash \
+COPY --from=composer:2.2.3 /usr/bin/composer /usr/bin/composer
+RUN apk --no-cache add nginx supervisor mysql-client git openssh-client bash \
     libzip-dev rabbitmq-c-dev libpng-dev icu-libs tzdata libssh-dev \
     && apk add --no-cache --virtual .build-deps zlib-dev icu-dev g++ autoconf make \
     && docker-php-ext-configure intl && docker-php-ext-configure calendar \
