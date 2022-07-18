@@ -1,6 +1,6 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.1-fpm-alpine
 
-COPY --from=composer:2.2.3 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.3.9 /usr/bin/composer /usr/bin/composer
 RUN apk --no-cache add nginx supervisor mysql-client git openssh-client bash \
     libzip-dev rabbitmq-c-dev libpng-dev icu-libs tzdata libssh-dev \
     && apk add --no-cache --virtual .build-deps zlib-dev icu-dev g++ autoconf make \
