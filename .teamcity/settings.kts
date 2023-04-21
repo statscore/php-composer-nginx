@@ -78,7 +78,7 @@ object PhpComposerNginx : BuildType({
             name = "Vulnerability scan"
 
             conditions {
-                doesNotEqual("vulns_detected", "")
+                doesNotEqual("vulns_detected", "none")
             }
             scriptContent = """
                 trivy image --format template --template "@/contrib/html.tpl" \
