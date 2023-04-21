@@ -65,7 +65,7 @@ object PhpComposerNginx : BuildType({
             name = "Build"
 
             conditions {
-                doesNotEqual("vulns_detected", "")
+                doesNotEqual("vulns_detected", "none")
             }
             commandType = build {
                 source = file {
