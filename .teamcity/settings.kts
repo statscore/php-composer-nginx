@@ -109,6 +109,7 @@ object PhpComposerNginx : BuildType({
             triggerBuild = always()
         }
         retryBuild {
+            enabled = false
             delaySeconds = 180
             attempts = 1
         }
