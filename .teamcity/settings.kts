@@ -53,8 +53,9 @@ object PhpComposerNginx : BuildType({
         script {
             name = "Initial vulnerability scan"
             scriptContent = """
-                trivy image -s HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
-                	statscore/php-composer-nginx:8.1
+                SCAN_RESULTS="${'$'}(trivy image --template "{{ range . }}{{ range .Vulnerabilities}}{{ .Severity }} {{ .PkgName}} {{ .VulnerabilityID }}; {{ end }}{{ end }}" \
+                -q -s HIGH,CRITICAL --format template statscore:php-composer-nginx:8.1 | tr -d '\n')
+                echo "##teamcity[setParameter name='vulns_detected' value='${'$'}(echo ${'$'}SCAN_RESULTS)"
             """.trimIndent()
             dockerImage = "aquasec/trivy"
             dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock -v %system.teamcity.build.checkoutDir%/trivy:/trivy"
