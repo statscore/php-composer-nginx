@@ -92,7 +92,7 @@ object PhpComposerNginx : BuildType({
             name = "Push"
 
             conditions {
-                doesNotEqual("vulns_detected", "")
+                doesNotEqual("vulns_detected", "none")
             }
             commandType = push {
                 namesAndTags = "statscore/php-composer-nginx:8.1"
