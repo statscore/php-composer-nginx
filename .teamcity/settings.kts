@@ -62,6 +62,10 @@ object PhpComposerNginx : BuildType({
         }
         dockerCommand {
             name = "Build"
+
+            conditions {
+                doesNotEqual("vulns_detected", "")
+            }
             commandType = build {
                 source = file {
                     path = "Dockerfile"
