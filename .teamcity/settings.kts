@@ -57,7 +57,7 @@ object PhpComposerNginx : BuildType({
         }
         script {
             name = "Vulnerability scan"
-            scriptContent = """trivy image --format template --template "@/contrib/html.tpl" -o /trivy/report.html sportsapi:beta"""
+            scriptContent = """trivy image --format template --template "@/contrib/html.tpl" -o /trivy/report.html statscore/php-composer-nginx:8.1"""
             dockerImage = "aquasec/trivy"
             dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock -v %system.teamcity.build.checkoutDir%/trivy:/trivy"
         }
