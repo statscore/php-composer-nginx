@@ -41,6 +41,10 @@ object PhpComposerNginx : BuildType({
 
     artifactRules = "trivy/report.html => trivy.zip"
 
+    params {
+        text("new_vulns_detected", "true", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+    }
+
     vcs {
         root(DslContext.settingsRoot)
     }
