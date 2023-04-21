@@ -75,6 +75,10 @@ object PhpComposerNginx : BuildType({
         }
         script {
             name = "Vulnerability scan"
+
+            conditions {
+                doesNotEqual("vulns_detected", "")
+            }
             scriptContent = """
                 trivy image --format template --template "@/contrib/html.tpl" \
                 	--dependency-tree -s HIGH,CRITICAL --ignore-unfixed --exit-code 1
