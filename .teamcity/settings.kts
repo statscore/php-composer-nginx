@@ -89,6 +89,10 @@ object PhpComposerNginx : BuildType({
         }
         dockerCommand {
             name = "Push"
+
+            conditions {
+                doesNotEqual("vulns_detected", "")
+            }
             commandType = push {
                 namesAndTags = "statscore/php-composer-nginx:8.1"
             }
