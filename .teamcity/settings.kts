@@ -82,7 +82,7 @@ object PhpComposerNginx : BuildType({
             }
             scriptContent = """
                 trivy image --format template --template "@/contrib/html.tpl" \
-                	--dependency-tree -s HIGH,CRITICAL --ignore-unfixed --exit-code 1
+                	--dependency-tree -s HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
                 	-o /trivy/report.html statscore/php-composer-nginx:8.1
             """.trimIndent()
             dockerImage = "aquasec/trivy"
