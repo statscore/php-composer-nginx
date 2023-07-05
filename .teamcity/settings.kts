@@ -102,7 +102,10 @@ object PhpComposerNginx : BuildType({
         }
         script {
             name = "Push (1)"
-            scriptContent = "docker push statscore/php-composer-nginx:8.1"
+            scriptContent = """
+                echo "%docker_password%" | docker login --username statscoreci --password-stdin
+                docker push statscore/php-composer-nginx:8.1
+            """.trimIndent()
         }
     }
 
