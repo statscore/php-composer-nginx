@@ -90,6 +90,7 @@ object PhpComposerNginx : BuildType({
         }
         dockerCommand {
             name = "Push"
+            enabled = false
 
             conditions {
                 doesNotEqual("vulns_detected", "none")
