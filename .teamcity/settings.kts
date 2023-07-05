@@ -99,6 +99,10 @@ object PhpComposerNginx : BuildType({
                 namesAndTags = "statscore/php-composer-nginx:8.1"
             }
         }
+        script {
+            name = "Push (1)"
+            scriptContent = "docker push statscore/php-composer-nginx:8.1"
+        }
     }
 
     triggers {
