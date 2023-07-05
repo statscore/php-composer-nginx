@@ -43,6 +43,7 @@ object PhpComposerNginx : BuildType({
 
     params {
         text("vulns_detected", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        password("docker_password", "credentialsJSON:5fad358c-f793-48c5-bed4-ceb5c3c79b64", display = ParameterDisplay.HIDDEN, readOnly = true)
     }
 
     vcs {
