@@ -117,6 +117,7 @@ object PhpComposerNginx : BuildType({
                 hour = 6
             }
             triggerBuild = always()
+            withPendingChangesOnly = false
         }
         retryBuild {
             enabled = false
