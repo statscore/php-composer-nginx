@@ -120,6 +120,7 @@ object PhpComposerNginx : BuildType({
             schedulingPolicy = daily {
                 hour = 6
             }
+            branchFilter = "+:master"
             triggerBuild = always()
             withPendingChangesOnly = false
         }
