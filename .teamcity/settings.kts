@@ -102,6 +102,10 @@ object PhpComposerNginx : BuildType({
         }
         script {
             name = "Push (1)"
+
+            conditions {
+                doesNotEqual("vulns_detected", "none")
+            }
             scriptContent = """
                 echo "%docker_password%" | docker login --username statscoreci --password-stdin
                 docker push statscore/php-composer-nginx:8.1
