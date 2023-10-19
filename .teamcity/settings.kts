@@ -42,7 +42,6 @@ object PhpComposerNginx : BuildType({
     artifactRules = "trivy/report.html => trivy.zip"
 
     params {
-        text("vulns_detected", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         password("docker_password", "credentialsJSON:5fad358c-f793-48c5-bed4-ceb5c3c79b64", display = ParameterDisplay.HIDDEN, readOnly = true)
     }
 
@@ -51,23 +50,8 @@ object PhpComposerNginx : BuildType({
     }
 
     steps {
-        script {
-            name = "Initial vulnerability scan"
-            scriptContent = """
-                SCAN_RESULTS="${'$'}(trivy image --template "{{ range . }}{{ range .Vulnerabilities}}{{ .Severity }} {{ .PkgName}} {{ .VulnerabilityID }}; {{ end }}{{ end }}" \
-                -q -s HIGH,CRITICAL --format template statscore/php-composer-nginx:8.1 | tr -d '\n')"
-                [ "${'$'}{SCAN_RESULTS}" != "" ] || export SCAN_RESULTS='none'
-                echo "##teamcity[setParameter name='vulns_detected' value='${'$'}(echo ${'$'}SCAN_RESULTS)']"
-            """.trimIndent()
-            dockerImage = "aquasec/trivy"
-            dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock -v %system.teamcity.build.checkoutDir%/trivy:/trivy"
-        }
         dockerCommand {
             name = "Build"
-
-            conditions {
-                doesNotEqual("vulns_detected", "none")
-            }
             commandType = build {
                 source = file {
                     path = "Dockerfile"
@@ -77,35 +61,16 @@ object PhpComposerNginx : BuildType({
         }
         script {
             name = "Vulnerability scan"
-
-            conditions {
-                doesNotEqual("vulns_detected", "none")
-            }
             scriptContent = """
                 trivy image --format template --template "@/contrib/html.tpl" \
-                	--dependency-tree -s HIGH,CRITICAL --ignore-unfixed --exit-code 1 \
+                	--dependency-tree -s HIGH,CRITICAL --exit-code 1 \
                 	-o /trivy/report.html statscore/php-composer-nginx:8.1
             """.trimIndent()
             dockerImage = "aquasec/trivy"
             dockerRunParameters = "-v /var/run/docker.sock:/var/run/docker.sock -v %system.teamcity.build.checkoutDir%/trivy:/trivy"
         }
-        dockerCommand {
-            name = "Push"
-            enabled = false
-
-            conditions {
-                doesNotEqual("vulns_detected", "none")
-            }
-            commandType = push {
-                namesAndTags = "statscore/php-composer-nginx:8.1"
-            }
-        }
         script {
-            name = "Push (1)"
-
-            conditions {
-                doesNotEqual("vulns_detected", "none")
-            }
+            name = "Push"
             scriptContent = """
                 echo "%docker_password%" | docker login --username statscoreci --password-stdin
                 docker push statscore/php-composer-nginx:8.1
